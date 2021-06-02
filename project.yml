@@ -1,12 +1,9 @@
 ---
-# project settings
-name: takelage-init
+name: takelage-min
 version: 0.1.0
 
 pipelines:
   - prod
-
-local_user: packer_local
 
 images:
   project:
@@ -18,3 +15,5 @@ images:
     omit_pipeline_name: prod
     layers:
       - site
+
+local_user: packer_local
