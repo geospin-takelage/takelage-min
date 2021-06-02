@@ -1,0 +1,5 @@
+---
+- name: (playbook-site) create project
+  hosts: all
+  roles:
+    - takel-cleanup
