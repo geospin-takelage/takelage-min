@@ -1,0 +1,20 @@
+---
+# project settings
+name: takelage-init
+version: 0.1.0
+
+pipelines:
+  - prod
+
+local_user: packer_local
+
+images:
+  project:
+    base_user: takelage
+    base_repo: takelslim
+    base_tag: latest
+    target_user: takelage
+    target_repo: init
+    omit_pipeline_name: prod
+    layers:
+      - site
