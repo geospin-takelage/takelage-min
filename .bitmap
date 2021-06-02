@@ -19,6 +19,24 @@
         "origin": "IMPORTED",
         "originallySharedDir": "rake/ansible"
     },
+    "takelage.rake/rake/images@0.0.11": {
+        "files": [
+            {
+                "name": "README.bit",
+                "relativePath": "README.bit",
+                "test": false
+            },
+            {
+                "name": "Rakefile",
+                "relativePath": "Rakefile",
+                "test": false
+            }
+        ],
+        "mainFile": "README.bit",
+        "rootDir": "rake/images",
+        "origin": "IMPORTED",
+        "originallySharedDir": "rake/images"
+    },
     "takelage.rake/rake/meta@0.0.9": {
         "files": [
             {
