@@ -7,10 +7,11 @@ lint: |
   ansible-lint
   flake8
 platforms:
-  - name: >-
-      molecule-takel-takelage-bit-test-project-${TAKELAGE_PROJECT_ENV:-default}
-    image: ${TAKELAGE_PROJECT_BASE_IMAGE:-takelage/takelbase}
-    command: /lib/systemd/systemd
+  # yamllint disable-line rule:line-length
+  - name: molecule-default-${HOSTNAME:-name}-${TAKELAGE_PROJECT_ENV:-prod}
+    # yamllint disable-line rule:line-length
+    image: ${TAKELAGE_PROJECT_BASE_IMG:-nobaseimage}
+    command: ${TAKELAGE_PROJECT_COMMAND:-/usr/bin/tail -f /dev/null}
     privileged: true
     pre_build_image: true
     groups:
@@ -36,11 +37,7 @@ verifier:
     # p: cacheprovider  # enable cache
     s: true  # capture output
     v: true
-  additional_files_or_dirs:
-    # integration
-    - ../../../roles/*/molecule/default/tests/test_*.py
-    # system
-    - ../../../roles/*/molecule/default/system/test_*.py
+  additional_files_or_dirs: ${TAKELAGE_MOLECULE_VERIFIER_FILES:-[]}
 scenario:
   create_sequence:
     - create
