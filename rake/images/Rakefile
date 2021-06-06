@@ -10,7 +10,7 @@ cmd_images_docker_pull = 'docker pull ' \
 cmd_images_docker_remove = 'docker image remove %<image>s'
 
 cmd_images_molecule = \
-  '%<env_command>s'
+  '%<env_command>s' \
   'TAKELAGE_PROJECT_NAME=%<name>s ' \
   'TAKELAGE_PROJECT_ENV=%<pipeline>s ' \
   'TAKELAGE_PROJECT_IMG=%<image>s ' \

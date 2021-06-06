@@ -40,9 +40,7 @@ jobs_project = \
      list
      login
      test
-     prepare
-     verify
-     side-effect]
+     verify]
 
 jobs_roles = \
   %i[converge
@@ -98,7 +96,7 @@ namespace :ansible do
             task job do
               @commands << format(
                 cmd_ansible_molecule_role,
-                command: job,
+                job: job,
                 role_path: role_path.split('/molecule')[0]
               )
             end
