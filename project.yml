@@ -10,10 +10,10 @@ images:
     base_user: takelage
     base_repo: takelslim
     base_tag: latest
-    target_user: takelage
-    target_repo: init
-    omit_pipeline_name: prod
     layers:
       - site
+    omit_pipeline_name: prod
+    target_user: takelage
+    target_repo: init
 
 local_user: packer_local
