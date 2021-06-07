@@ -24,15 +24,18 @@ cmd_images_packer =
   'packer build ' \
   "-var='ansible_environment=%<pipeline>s' " \
   "-var='ansible_playbook=%<playbook>s' " \
-  "-var='image_name=%<image_name>s' " \
   "-var='base_repo=%<base_repo>s' " \
   "-var='base_user=%<base_user>s' " \
   "-var='base_tag=%<base_tag>s' " \
+  "-var='image_name=%<image_name>s' " \
   "-var='local_user=%<local_user>s' " \
   "-var='target_repo=%<target_repo>s' " \
-  '%<var_privileged>s' \
-  '%<var_packer_command>s' \
   '%<var_command>s' \
+  '%<var_entrypoint>s' \
+  '%<var_env>s' \
+  '%<var_packer_command>s' \
+  '%<var_privileged>s' \
+  '%<var_workdir>s' \
   '%<packer_template_dir>s'
 
 jobs = \
@@ -57,8 +60,8 @@ namespace :images do
           @commands << format(
             cmd_images_docker_pull,
             base_repo: images[image]['base_repo'],
-            base_user: images[image]['base_user'],
-            base_tag: images[image]['base_tag']
+            base_tag: images[image]['base_tag'],
+            base_user: images[image]['base_user']
           )
         end
 
@@ -131,41 +134,27 @@ namespace :images do
 
                   packer_template_dir = images[image][packer_template_dir] || default_packer_template_dir
 
-                  # rubocop:disable Style/IfUnlessModifier
-                  var_privileged = ''
-                  if images[image].key?('privileged')
-                    var_privileged = "-var='privileged=#{images[image]['privileged']}' "
-                  end
-
-                  var_command = ''
-                  if images[image].key?('command')
-                    var_command = "-var='command=#{images[image]['command']}' "
-                  end
-
-                  var_packer_command = ''
-                  if images[image].key?('packer_command')
-                    var_packer_command = "-var='packer_command=#{images[image]['packer_command']}' "
-                  end
-                  # rubocop:enable Style/IfUnlessModifier
-
                   parent_layer = layer
 
                   # desc "Build layer #{layer} from base layer #{parent_layer} of image #{image}"
                   task "#{number}-#{layer}".to_sym do
                     @commands << format(
                       cmd_images_packer,
-                      image_name: image,
-                      pipeline: pipeline,
-                      playbook: "playbook-#{layer}.yml",
                       base_repo: base_repo,
                       base_user: base_user,
                       base_tag: base_tag,
+                      image_name: image,
                       local_user: @project['local_user'],
                       packer_template_dir: packer_template_dir,
-                      var_privileged: var_privileged,
-                      var_packer_command: var_packer_command,
-                      var_command: var_command,
-                      target_repo: target_repo
+                      pipeline: pipeline,
+                      playbook: "playbook-#{layer}.yml",
+                      target_repo: target_repo,
+                      var_entrypoint: create_var_arg(images, image, 'entrypoint'),
+                      var_env: create_var_env(images, image),
+                      var_privileged: create_var_arg(images, image, 'privileged'),
+                      var_packer_command: create_var_arg(images, image, 'packer_command'),
+                      var_command: create_var_arg(images, image, 'command'),
+                      var_workdir: create_var_arg(images, image, 'workdir')
                     )
                   end
                 end
@@ -243,4 +232,20 @@ def molecule_verifier_plays(layers)
     verifier_plays << "../../playbook-#{layer}.yml"
   end
   "'#{verifier_plays.join(':')}'"
+end
+
+def create_var_arg(images, image, arg)
+  images[image].key?(arg) ? "-var='#{arg}=#{images[image][arg]}' " : ''
+end
+
+def create_var_env(images, image)
+  return '' unless images[image].key?('env')
+
+  # '' is frozen so use .dup to make a copy
+  var_env_list = []
+  images[image]['env'].each do |key, value|
+    var_env_list << "\"#{key}\"=\"#{value}\""
+  end
+  var_env_string = var_env_list.join(',')
+  "-var='env={#{var_env_string}}' "
 end

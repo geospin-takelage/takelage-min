@@ -36,6 +36,7 @@ variable "entrypoint" {
 }
 
 variable "env" {
+  type = map(string)
   default = {
     "DEBIAN_FRONTEND" = "noninteractive",
     "LANG" = "en_US.UTF-8",
