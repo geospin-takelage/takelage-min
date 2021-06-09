@@ -24,6 +24,39 @@
         "origin": "AUTHORED",
         "exported": true
     },
+    "takelage.ansible/ansible/molecule/image@0.0.1": {
+        "files": [
+            {
+                "relativePath": "ansible/molecule/image/README.bit",
+                "test": false,
+                "name": "README.bit"
+            },
+            {
+                "relativePath": "ansible/molecule/image/converge.yml",
+                "test": false,
+                "name": "converge.yml"
+            },
+            {
+                "relativePath": "ansible/molecule/image/molecule.yml",
+                "test": false,
+                "name": "molecule.yml"
+            },
+            {
+                "relativePath": "ansible/molecule/image/tests/conftest.py",
+                "test": false,
+                "name": "conftest.py"
+            },
+            {
+                "relativePath": "ansible/molecule/image/tests/test_image_meta.py",
+                "test": false,
+                "name": "test_image_meta.py"
+            }
+        ],
+        "mainFile": "ansible/molecule/image/README.bit",
+        "trackDir": "ansible/molecule/image",
+        "origin": "AUTHORED",
+        "exported": true
+    },
     "takelage.ansible/ansible/roles/takel-cleanup@0.0.13": {
         "files": [
             {
